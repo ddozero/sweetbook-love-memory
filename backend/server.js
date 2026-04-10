@@ -8,6 +8,7 @@ const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const SWEETBOOK_ENV = process.env.SWEETBOOK_ENV || 'sandbox';
 
 app.use(cors());
 app.use(express.json());
@@ -19,10 +20,13 @@ app.use(express.json());
 app.get('/test', (req, res) => {
   res.json({
     message: '백엔드 서버 연결 성공!',
+    sweetbookEnv: SWEETBOOK_ENV,
+    hasApiKey: !!process.env.SWEETBOOK_API_KEY,
   });
 });
 
 //서버 실행
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Sweetbook environment: ${SWEETBOOK_ENV}`);
 });
