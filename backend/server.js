@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const {SweetbookClient} = require('./sweetbook-sdk');
 
 // routes 나중에 만들면 여기 추가
 // const booksRouter = require('./routes/books');
@@ -9,6 +10,11 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const SWEETBOOK_ENV = process.env.SWEETBOOK_ENV || 'sandbox';
+
+const client = new SweetbookClient({
+  apiKey: process.env.SWEETBOOK_API_KEY,
+  environment: process.env.SWEETBOOK_ENV || 'sandbox',
+});
 
 app.use(cors());
 app.use(express.json());
@@ -19,9 +25,10 @@ app.use(express.json());
 
 app.get('/test', (req, res) => {
   res.json({
-    message: '백엔드 서버 연결 성공!',
+    message: '백엔드 서버 연결 성공',
     sweetbookEnv: SWEETBOOK_ENV,
     hasApiKey: !!process.env.SWEETBOOK_API_KEY,
+    sdkReady: !!client, //client객체 생성 됐는지 확인(있으면 true, 없으면 false)
   });
 });
 
